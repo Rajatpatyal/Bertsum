@@ -1,0 +1,17 @@
+from transformers import BertTokenizer, BertForSequenceClassification
+
+# Load the BERTSUM model and tokenizer
+model_name = "bert-base-uncased"
+model = BertForSequenceClassification.from_pretrained(model_name, num_labels=2)
+tokenizer = BertTokenizer.from_pretrained(model_name)
+text = "This is the input text you want to summarize. It can be longer and contain multiple sentences."
+
+# Tokenize the text
+inputs = tokenizer(text, return_tensors="pt", max_length=512, truncation=True)
+with torch.no_grad():
+    outputs = model(**inputs)
+
+# The model may return logits; you can process them as needed
+logits = outputs.logits
+
+# Alternatively, you can use the `BertForSequenceClassification` model to fine-tune for summarization and generate summaries.
